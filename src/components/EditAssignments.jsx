@@ -6,29 +6,35 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { addAssignment } from "../store/actions";
-import { useNavigate } from "react-router-dom";
+import { editAssignment } from "../store/actions";
+import { useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 
-export default function Form() {
+export default function EditAssignments() {
+  const assignments = useSelector((state) => state.assignment);
+  const params = useParams();
   const navigate = useNavigate();
+  // current assignment
+  const ca = assignments.find((item) => item.id === params.id);
+
   const [formData, setFormData] = useState({
-    title: "",
-    status: "",
-    details: "",
+    title: ca.title,
+    status: ca.status,
+    details: ca.details,
   });
   const [errors, setErrors] = useState({
     title: false,
     status: false,
     details: false,
   });
-  const handleSubmit = () => {
+  const handleSubmit = (id) => {
     setErrors({ title: false, status: false, details: false });
     if (title === "") setErrors({ ...errors, title: true });
     if (status === "") setErrors({ ...errors, status: true });
     if (details === "") setErrors({ ...errors, details: true });
 
     if (title && status && details) {
-      addAssignment(formData);
+      editAssignment(id, formData);
       setFormData({ title: "", status: "", details: "" });
       navigate("/");
     }
@@ -82,7 +88,7 @@ export default function Form() {
         <Button
           variant="contained"
           onClick={() => {
-            handleSubmit();
+            handleSubmit(params.id);
           }}
         >
           Submit

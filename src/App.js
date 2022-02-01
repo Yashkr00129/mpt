@@ -5,6 +5,7 @@ import Form from "./components/Form";
 import Assignments from "./components/Assignments";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import EditAssignments from "./components/EditAssignments";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/add" element={<Form />} />
           <Route path="/" element={<Assignments />} />
+          <Route path="/edit/:id" element={<EditAssignments />} />
         </Routes>
       </Router>
     </Provider>
